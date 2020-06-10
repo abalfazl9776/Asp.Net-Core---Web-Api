@@ -17,6 +17,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Services.Services.JWT;
 using WebFramework.Api;
+using WebFramework.Application.Interfaces.User;
 using WebFramework.Application.Models;
 
 namespace MyApi.Controllers.v1.UserController
@@ -33,11 +34,11 @@ namespace MyApi.Controllers.v1.UserController
         private readonly SignInManager<User> _signInManager;
         private readonly IMapper _mapper;
         private readonly ITokenFactory _tokenFactory;
-        private readonly SiteSettings _siteSetting;
+        private readonly IGetUsersHandler _getUsersHandler;
 
         public UserController(IUserRepository userRepository, ILogger<UserController> logger, IJwtService jwtService,
             UserManager<User> userManager, RoleManager<Role> roleManager, SignInManager<User> signInManager,
-            IMapper mapper, ITokenFactory tokenFactory, IOptionsSnapshot<SiteSettings> settings)
+            IMapper mapper, ITokenFactory tokenFactory, IGetUsersHandler getUsersHandler)
         {
             _userRepository = userRepository;
             _logger = logger;
@@ -47,16 +48,15 @@ namespace MyApi.Controllers.v1.UserController
             _signInManager = signInManager;
             _mapper = mapper;
             _tokenFactory = tokenFactory;
-            _siteSetting = settings.Value;
+            _getUsersHandler = getUsersHandler;
         }
 
         [HttpGet]
         public async Task<ApiResult<List<UserSelectDto>>> Get(CancellationToken cancellationToken)
         {
-            var usersList = await _userRepository.TableNoTracking.ProjectTo<UserSelectDto>(_mapper.ConfigurationProvider)
-                .ToListAsync(cancellationToken);
+            var result = await _getUsersHandler.Handle(cancellationToken);
             
-            return Ok(usersList);
+            return Ok(result);
         }
 
         [HttpGet("{id:int}")]

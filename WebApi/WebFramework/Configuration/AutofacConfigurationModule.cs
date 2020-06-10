@@ -21,23 +21,22 @@ namespace WebFramework.Configuration
             //RegisterType > As > Lifetime
             containerBuilder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>)).InstancePerLifetimeScope();
 
-            var applicationAssembly = typeof(UserDto).Assembly;
             var commonAssembly = typeof(SiteSettings).Assembly;
             var entitiesAssembly = typeof(IEntity).Assembly;
             var dataAssembly = typeof(ApplicationDbContext).Assembly;
             var servicesAssembly = typeof(JwtService).Assembly;
 
-            containerBuilder.RegisterAssemblyTypes(applicationAssembly, commonAssembly, entitiesAssembly, dataAssembly, servicesAssembly, ThisAssembly)
+            containerBuilder.RegisterAssemblyTypes(commonAssembly, entitiesAssembly, dataAssembly, servicesAssembly, ThisAssembly)
                 .AssignableTo<IScopedDependency>()
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
 
-            containerBuilder.RegisterAssemblyTypes(applicationAssembly, commonAssembly, entitiesAssembly, dataAssembly, servicesAssembly, ThisAssembly)
+            containerBuilder.RegisterAssemblyTypes(commonAssembly, entitiesAssembly, dataAssembly, servicesAssembly, ThisAssembly)
                 .AssignableTo<ITransientDependency>()
                 .AsImplementedInterfaces()
                 .InstancePerDependency();
 
-            containerBuilder.RegisterAssemblyTypes(applicationAssembly, commonAssembly, entitiesAssembly, dataAssembly, servicesAssembly, ThisAssembly)
+            containerBuilder.RegisterAssemblyTypes(commonAssembly, entitiesAssembly, dataAssembly, servicesAssembly, ThisAssembly)
                 .AssignableTo<ISingletonDependency>()
                 .AsImplementedInterfaces()
                 .SingleInstance();

@@ -19,9 +19,9 @@ namespace WebFramework.CustomMapping
             services.AddAutoMapper(config =>
             {
                 config.AddCustomMappingProfile();
-                config.Advanced.BeforeSeal(configProvicer =>
+                config.Advanced.BeforeSeal(configProvider =>
                 {
-                    configProvicer.CompileMappings();
+                    configProvider.CompileMappings();
                 });
             }, assemblies);
 
@@ -38,7 +38,8 @@ namespace WebFramework.CustomMapping
 
         public static void AddCustomMappingProfile(this IMapperConfigurationExpression config)
         {
-            config.AddCustomMappingProfile(Assembly.GetEntryAssembly());
+            //config.AddCustomMappingProfile(Assembly.GetEntryAssembly());
+            config.AddCustomMappingProfile(Assembly.GetExecutingAssembly());
         }
 
         public static void AddCustomMappingProfile(this IMapperConfigurationExpression config, params Assembly[] assemblies)

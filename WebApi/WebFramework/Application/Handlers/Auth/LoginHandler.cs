@@ -19,11 +19,11 @@ namespace WebFramework.Application.Handlers.Auth
         private readonly IUserRepository _userRepository;
         private readonly ILogger<LoginHandler> _logger;
         private readonly IJwtService _jwtService;
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<Entities.User.User> _userManager;
         private readonly ITokenFactory _tokenFactory;
 
         public LoginHandler(IUserRepository userRepository, ILogger<LoginHandler> logger, IJwtService jwtService,
-            UserManager<User> userManager, ITokenFactory tokenFactory)
+            UserManager<Entities.User.User> userManager, ITokenFactory tokenFactory)
         {
             _userRepository = userRepository;
             _logger = logger;
