@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Entities.User;
 using WebFramework.Api;
 
-namespace WebFramework.Application.Models
+namespace WebFramework.Application.Models.DTOs
 {
     public class UserDto : CustomDto<UserDto, User>/*, IValidatableObject*/
     {

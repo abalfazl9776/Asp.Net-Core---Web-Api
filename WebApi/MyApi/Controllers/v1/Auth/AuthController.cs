@@ -63,7 +63,7 @@ namespace MyApi.Controllers.v1.Auth
         [HttpPost("[action]")]
         public async Task<ApiResult<TokenSelectRequest>> Login(TokenRequest tokenRequest, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Login called with username: " + tokenRequest.username);
+            //_logger.LogInformation("Login called with username: " + tokenRequest.username);
             //if (!tokenRequest.grant_type.Equals("password", StringComparison.OrdinalIgnoreCase))
             //    throw new Exception("OAuth flow is not password.");
             

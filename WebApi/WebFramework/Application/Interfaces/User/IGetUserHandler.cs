@@ -6,7 +6,7 @@ using WebFramework.Application.Models.DTOs;
 
 namespace WebFramework.Application.Interfaces.User
 {
-    public interface IGetUsersHandler : IRequestHandler<List<UserSelectDto>>
+    public interface IGetUserHandler : IRequestHandler<GetByIdRequest, UserSelectDto>
     {
     }
 }

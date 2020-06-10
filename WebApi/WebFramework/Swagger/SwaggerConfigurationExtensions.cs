@@ -159,13 +159,14 @@ namespace WebFramework.Swagger
                     {
                         Password = new OpenApiOAuthFlow
                         {
-                            TokenUrl = new Uri("https://localhost:44340/api/v1/user/Token"),
+                            TokenUrl = new Uri("https://localhost:44340/api/v1/auth/Token"),
                             //AuthorizationUrl = new Uri("https://localhost:44340/api/v1/users/Token"),
-                            Scopes = new Dictionary<string, string>
-                            {
-                                { "resourceApi", "Resource API - full access" }
-                            }
-                        }
+                            //Scopes = new Dictionary<string, string>
+                            //{
+                            //    { "resourceApi", "Resource API - full access" }
+                            //}
+                        },
+                        
                     }
                 });
                 #endregion

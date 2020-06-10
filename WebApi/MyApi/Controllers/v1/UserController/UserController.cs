@@ -19,6 +19,7 @@ using Services.Services.JWT;
 using WebFramework.Api;
 using WebFramework.Application.Interfaces.User;
 using WebFramework.Application.Models;
+using WebFramework.Application.Models.DTOs;
 
 namespace MyApi.Controllers.v1.UserController
 {
@@ -33,12 +34,12 @@ namespace MyApi.Controllers.v1.UserController
         private readonly RoleManager<Role> _roleManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IMapper _mapper;
-        private readonly ITokenFactory _tokenFactory;
         private readonly IGetUsersHandler _getUsersHandler;
+        private readonly IGetUserHandler _getUserHandler;
 
         public UserController(IUserRepository userRepository, ILogger<UserController> logger, IJwtService jwtService,
             UserManager<User> userManager, RoleManager<Role> roleManager, SignInManager<User> signInManager,
-            IMapper mapper, ITokenFactory tokenFactory, IGetUsersHandler getUsersHandler)
+            IMapper mapper, IGetUserHandler getUserHandler, IGetUsersHandler getUsersHandler)
         {
             _userRepository = userRepository;
             _logger = logger;
@@ -47,7 +48,7 @@ namespace MyApi.Controllers.v1.UserController
             _roleManager = roleManager;
             _signInManager = signInManager;
             _mapper = mapper;
-            _tokenFactory = tokenFactory;
+            _getUserHandler = getUserHandler;
             _getUsersHandler = getUsersHandler;
         }
 
@@ -62,9 +63,8 @@ namespace MyApi.Controllers.v1.UserController
         [HttpGet("{id:int}")]
         public async Task<ApiResult<UserSelectDto>> Get(int id, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.TableNoTracking.ProjectTo<UserSelectDto>(_mapper.ConfigurationProvider)
-                .SingleOrDefaultAsync(p => p.Id.Equals(id), cancellationToken);
-
+            var user = await _getUserHandler.Handle(new GetByIdRequest(id), cancellationToken);
+            
             if (user == null)
                 return NotFound();
 
