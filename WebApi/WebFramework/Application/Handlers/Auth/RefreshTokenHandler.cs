@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Threading;
@@ -49,13 +50,17 @@ namespace WebFramework.Application.Handlers.Auth
             var user = await _userRepository.TableNoTracking.Include(u => u.RefreshToken)
                 .SingleOrDefaultAsync(u => u.Id.Equals(int.Parse(id.Value)), cancellationToken);
 
-            if (!user.HasValidRefreshToken(rtd.refresh_token))
+            var refreshTokenIsValid = user.RefreshToken != null &&
+                                      (user.RefreshToken.Active && user.RefreshToken.Token.Equals(rtd.refresh_token));
+            if (!refreshTokenIsValid)
             {
                 throw new BadRequestException("Refresh-Token is not valid!", HttpStatusCode.BadRequest);
             }
 
             var refreshToken = _tokenFactory.GenerateToken();
-            user.AddRefreshToken(refreshToken, user.Id);
+            var rt = new RefreshToken(refreshToken, DateTime.UtcNow.AddDays(_siteSetting.JwtSettings.RefreshTokenExpirationDays), user.Id);
+            user.RefreshToken.Token = rt.Token;
+            user.RefreshToken.Expires = rt.Expires;
             await _userRepository.UpdateSecurityStampAsync(user, cancellationToken);
 
             var jwt = await _jwtService.GenerateAsync(user);

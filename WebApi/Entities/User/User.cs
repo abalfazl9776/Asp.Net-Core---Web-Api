@@ -38,47 +38,9 @@ namespace Entities.User
 
         public DateTimeOffset LastLoginDate { get; set; }
 
-        //private readonly List<RefreshToken> _refreshTokens = new List<RefreshToken>();
-        //public IReadOnlyCollection<RefreshToken> RefreshTokens => _refreshTokens.AsReadOnly();
-
         public RefreshToken RefreshToken { get; set; }
 
         //public ICollection<Address> Addresses { get; set; }
-
-        public bool HasValidRefreshToken(string refreshToken)
-        {
-            return RefreshToken != null && (RefreshToken.Active && RefreshToken.Token.Equals(refreshToken));
-        }
-
-        public void AddRefreshToken(string token, int userId, double daysToExpire = 30)
-        {
-            var rt = new RefreshToken(token, DateTime.UtcNow.AddDays(daysToExpire), userId);
-            if (RefreshToken == null)
-            {
-                RefreshToken = rt;
-            }
-            else
-            {
-                RefreshToken.Token = rt.Token;
-                RefreshToken.Expires = rt.Expires;
-            }
-        }
-
-        //public bool HasValidRefreshToken(string refreshToken)
-        //{
-        //    return _refreshTokens.Any(rt => rt.Token == refreshToken && rt.Active);
-        //}
-
-        //public void AddRefreshToken(string token, int userId, double daysToExpire = 30)
-        //{
-        //    _refreshTokens.Clear();
-        //    _refreshTokens.Add(new RefreshToken(token, DateTime.UtcNow.AddDays(daysToExpire), userId));
-        //}
-
-        //public void RemoveRefreshToken(string refreshToken)
-        //{
-        //    _refreshTokens.Remove(_refreshTokens.First(t => t.Token == refreshToken));
-        //}
 
     }
 
