@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Common;
 using Data.Contracts;
 using Entities.User;
+using Microsoft.Extensions.Options;
 
 namespace Services.DataInitializer
 {
@@ -14,11 +16,14 @@ namespace Services.DataInitializer
     {
         private readonly RoleManager<Role> _roleManager;
         private readonly UserManager<User> _userManager;
+        private readonly SiteSettings _siteSetting;
 
-        public A_UserAndRolesDataInitializer(RoleManager<Role> roleManager, UserManager<User> userManager)
+        public A_UserAndRolesDataInitializer(RoleManager<Role> roleManager, UserManager<User> userManager,
+            IOptionsSnapshot<SiteSettings> settings)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _siteSetting = settings.Value;
         }
 
         public void InitializeData()
@@ -42,16 +47,17 @@ namespace Services.DataInitializer
 
         public void InitializeUsers()
         {
-            if (!_userManager.Users.AsNoTracking().Any(p => p.UserName == "admin"))
+            if (!_userManager.Users.AsNoTracking().Any(p => p.UserName == _siteSetting.InitialUserSettings.UserName))
             {
                 var user = new User
                 {
-                    UserName = "admin",
+                    UserName = _siteSetting.InitialUserSettings.UserName,
                     Email = "admin@site.com",
                     IsActive = true
                     
                 };
-                var addUser = _userManager.CreateAsync(user, "123123").GetAwaiter().GetResult();
+                var addUser = _userManager.CreateAsync(user, _siteSetting.InitialUserSettings.Password)
+                    .GetAwaiter().GetResult();
                 if (addUser.Succeeded)
                 {
                     User admin = _userManager.FindByNameAsync(user.UserName).GetAwaiter().GetResult();

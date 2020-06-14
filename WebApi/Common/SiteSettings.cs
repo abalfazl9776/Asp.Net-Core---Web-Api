@@ -4,6 +4,7 @@
     {
         public JwtSettings JwtSettings { get; set; }
         public IdentitySettings IdentitySettings { get; set; }
+        public InitialUserSettings InitialUserSettings { get; set; }
     }
 
     public class IdentitySettings
@@ -14,6 +15,9 @@
         public bool PasswordRequireUppercase { get; set; }
         public bool PasswordRequireLowercase { get; set; }
         public bool RequireUniqueEmail { get; set; }
+        public int MaxFailedAccessAttempts { get; set; }
+        public int DefaultLockoutTimeSpanMinutes { get; set; }
+        public bool AllowedForNewUsers { get; set; }
     }
 
     public class JwtSettings
@@ -25,5 +29,11 @@
         public int NotBeforeMinutes { get; set; }
         public int ExpirationMinutes { get; set; }
         public int RefreshTokenExpirationDays { get; set; }
+    }
+
+    public class InitialUserSettings
+    {
+        public string UserName { get; set; }
+        public string Password { get; set; }
     }
 }

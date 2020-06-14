@@ -33,9 +33,9 @@ namespace WebFramework.Configuration
                 //identityOptions.SignIn.RequireConfirmedPhoneNumber = false;
 
                 //Lockout Settings
-                //identityOptions.Lockout.MaxFailedAccessAttempts = 5;
-                //identityOptions.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                //identityOptions.Lockout.AllowedForNewUsers = false;
+                identityOptions.Lockout.MaxFailedAccessAttempts = settings.MaxFailedAccessAttempts;
+                identityOptions.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(settings.DefaultLockoutTimeSpanMinutes);
+                identityOptions.Lockout.AllowedForNewUsers = settings.AllowedForNewUsers;
             })
             //.AddRoleManager<RoleManager<Role>>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
