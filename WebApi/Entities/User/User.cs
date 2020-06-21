@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json.Serialization;
+using Common.Utilities;
 using Entities.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +29,15 @@ namespace Entities.User
         [Column(TypeName = "date")]
         public DateTime BirthDate { get; set; }
 
-        public GenderType Gender { get; set; }
+        [Column("Gender")]
+        public string GenderString
+        {
+            get => Gender.ToString();
+            private set => Gender = value.ParseEnum<Gender>();
+        }
+
+        [NotMapped]
+        public Gender Gender { get; set; }
 
         public string NationalCode { get; set; }
 
@@ -57,7 +66,7 @@ namespace Entities.User
     //}
 
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public enum GenderType
+    public enum Gender
     {
         [EnumMember(Value = "Female")]
         //[Display(Name = "Female")]

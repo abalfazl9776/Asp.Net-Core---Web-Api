@@ -29,7 +29,7 @@ namespace WebFramework.Application.Models.DTOs
 
         public DateTime BirthDate { get; set; }
 
-        public GenderType Gender { get; set; }
+        public Gender Gender { get; set; }
 
         public string NationalCode { get; set; }
 
@@ -63,7 +63,7 @@ namespace WebFramework.Application.Models.DTOs
 
         public DateTime BirthDate { get; set; }
 
-        public GenderType Gender { get; set; }
+        public Gender Gender { get; set; }
 
         public string NationalCode { get; set; }
 

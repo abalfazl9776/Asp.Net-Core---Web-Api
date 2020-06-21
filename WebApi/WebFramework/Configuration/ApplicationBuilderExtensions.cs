@@ -35,12 +35,24 @@ namespace WebFramework.Configuration
             //Dos not use Migrations, just Create Database with latest changes
             //dbContext.Database.EnsureCreated();
             //Applies any pending migrations for the context to the database like (Update-Database)
-            dbContext.Database.Migrate();
+            //dbContext.Database.Migrate();
 
             //Initialize database with some default values (Seeding database)
-            var dataInitializers = scope.ServiceProvider.GetServices<IDataInitializer>();
-            foreach (var dataInitializer in dataInitializers)
-                dataInitializer.InitializeData();
+            //var dataInitializers = scope.ServiceProvider.GetServices<IDataInitializer>();
+            //foreach (var dataInitializer in dataInitializers)
+            //    dataInitializer.InitializeData();
+
+            if (dbContext.Database.CanConnect())
+            {
+                dbContext.Database.Migrate();
+            }
+            else
+            {
+                dbContext.Database.Migrate();
+                var dataInitializers = scope.ServiceProvider.GetServices<IDataInitializer>();
+                foreach (var dataInitializer in dataInitializers)
+                    dataInitializer.InitializeData();
+            }
         }
     }
 }
