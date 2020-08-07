@@ -2,11 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Entities;
 using Common;
 using Microsoft.AspNetCore.Identity;
 using Data;
 using Entities.User;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace WebFramework.Configuration
 {
@@ -40,6 +42,23 @@ namespace WebFramework.Configuration
             //.AddRoleManager<RoleManager<Role>>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
+            //.AddPasswordValidator<CustomPasswordValidator>();
         }
+
+        //public class CustomPasswordValidator : IPasswordValidator<User>
+        //{
+        //    public Task<IdentityResult> ValidateAsync(UserManager<User> manager, User user, string password)
+        //    {
+        //        if (string.IsNullOrEmpty(password))
+        //        {
+        //            return new Task<IdentityResult>(() => IdentityResult.Success);
+        //        }
+        //        else
+        //        {
+        //            PasswordValidator<User> validator = new PasswordValidator<User>();
+        //            return validator.ValidateAsync(manager, user, password);
+        //        }
+        //    }
+        //}
     }
 }

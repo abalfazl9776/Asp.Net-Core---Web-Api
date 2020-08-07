@@ -55,10 +55,14 @@ namespace MyApi
                         .UseIISIntegration()
                         .UseStartup<Startup>();
                 })
-                .ConfigureLogging(logging =>
+                .ConfigureLogging((hostingContext, logging)  =>
                 {
                     logging.ClearProviders();
-                    logging.SetMinimumLevel(LogLevel.Debug);
+                    if (hostingContext.HostingEnvironment.IsDevelopment())
+                    {
+                        logging.SetMinimumLevel(LogLevel.Debug);
+                        logging.AddConsole();
+                    }
                 })
                 .UseNLog();
         

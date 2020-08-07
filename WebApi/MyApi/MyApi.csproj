@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>f7a95b8f-5002-457c-a28c-e1198aa96645</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -25,11 +26,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\assets\" />
+    <ProjectReference Include="..\WebFramework\WebFramework.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WebFramework\WebFramework.csproj" />
+    <Folder Include="wwwroot\assets\" />
   </ItemGroup>
 
 </Project>

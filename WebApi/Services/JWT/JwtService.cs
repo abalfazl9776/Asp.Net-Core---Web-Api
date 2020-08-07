@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Services.Services.JWT
+namespace Services.JWT
 {
     public class JwtService : IJwtService , IScopedDependency
     {

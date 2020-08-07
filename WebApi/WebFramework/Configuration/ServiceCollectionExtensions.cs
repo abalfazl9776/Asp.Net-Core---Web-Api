@@ -15,8 +15,14 @@ using Data.Contracts;
 using Entities.User;
 using Microsoft.Extensions.Configuration;
 using Data;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Services.SMS.MH;
+using Services.SMS.OTP;
+
 //using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 //using Pomelo.EntityFrameworkCore.MySql.Storage;
 
@@ -24,6 +30,8 @@ namespace WebFramework.Configuration
 {
     public static class ServiceCollectionExtensions
     {
+        private static AuthenticationBuilder AuthenticationBuilder;
+
         public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
         {
             //SQL Server
@@ -47,7 +55,7 @@ namespace WebFramework.Configuration
 
         public static void AddJwtAuthentication(this IServiceCollection services, JwtSettings jwtSettings)
         {
-            services.AddAuthentication(options =>
+            AuthenticationBuilder = services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -136,6 +144,43 @@ namespace WebFramework.Configuration
                     }
                 };
             });
+        }
+
+        public static void AddGoogleAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
+            AuthenticationBuilder.AddGoogle(options =>
+            {
+                IConfigurationSection googleAuthNSection =
+                    configuration.GetSection("Authentication:Google");
+
+                options.CallbackPath = new PathString("/google-callback");
+                options.ClientId = googleAuthNSection["ClientId"];
+                options.ClientSecret = googleAuthNSection["ClientSecret"];
+                //options.ClientId = "330448079638-7f821n6cmjjd73ji1miq8g542mvhv2t0.apps.googleusercontent.com";
+                //options.ClientSecret = "AdPD1iVo-tzcTmf8kiO9GNuB";
+                options.Events = new OAuthEvents
+                {
+                    OnRemoteFailure = (RemoteFailureContext context) =>
+                    {
+                        context.Response.Redirect("/api/v1/auth-google/denied");
+                        context.HandleResponse();
+                        return Task.CompletedTask;
+                    }
+                };
+            });
+        }
+
+        public static void AddCustomHttpClient(this IServiceCollection services, IConfiguration configuration)
+        {
+            //IConfigurationSection smsSection = configuration.GetSection("SMS:MashhadHost");
+
+            services.AddHttpClient<IMashhadSmsService, MashhadSmsService>(c =>
+            {
+                c.BaseAddress = new Uri("http://188.0.240.110/api/select");
+                c.DefaultRequestHeaders.Add("cache-control", "no-cache");
+                //c.BaseAddress = new Uri("http://ippanel.com:8080/?apikey=" + smsSection["ApiKey"]);
+            });
+            //.SetHandlerLifetime(TimeSpan.FromMinutes(1));
         }
 
         public static void AddCustomApiVersioning(this IServiceCollection services)

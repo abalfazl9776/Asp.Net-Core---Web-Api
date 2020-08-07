@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Services.Services.JWT;
+using Services.JWT;
 using WebFramework.Api;
 using WebFramework.Application.Interfaces.User;
 using WebFramework.Application.Models;

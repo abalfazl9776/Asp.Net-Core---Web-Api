@@ -4,7 +4,7 @@ using Data;
 using Data.Repositories;
 using Data.Contracts;
 using Entities.Common;
-using Services.Services.JWT;
+using Services.JWT;
 using WebFramework.Application.Models;
 
 namespace WebFramework.Configuration

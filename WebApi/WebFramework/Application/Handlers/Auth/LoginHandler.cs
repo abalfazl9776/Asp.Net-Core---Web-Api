@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Services.Services.JWT;
+using Services.JWT;
 using WebFramework.Application.Interfaces.Auth;
 using WebFramework.Application.Models;
 

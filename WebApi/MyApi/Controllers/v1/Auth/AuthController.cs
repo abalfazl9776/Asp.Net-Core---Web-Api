@@ -15,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Services.Services.JWT;
+using Services.JWT;
 using WebFramework.Api;
 using WebFramework.Application.Interfaces.Auth;
 using WebFramework.Application.Models;
@@ -31,15 +31,18 @@ namespace MyApi.Controllers.v1.Auth
         private readonly UserManager<User> _userManager;
         private readonly ILoginHandler _loginHandler;
         private readonly IRefreshTokenHandler _refreshTokenHandler;
+        private readonly ILogoutHandler _logoutHandler;
 
         public AuthController(ILogger<UserController.UserController> logger, IJwtService jwtService,
-            UserManager<User> userManager, ILoginHandler loginHandler, IRefreshTokenHandler refreshTokenHandler)
+            UserManager<User> userManager, ILoginHandler loginHandler, IRefreshTokenHandler refreshTokenHandler,
+            ILogoutHandler logoutHandler)
         {
             _logger = logger;
             _jwtService = jwtService;
             _userManager = userManager;
             _loginHandler = loginHandler;
             _refreshTokenHandler = refreshTokenHandler;
+            _logoutHandler = logoutHandler;
         }
 
         [HttpPost("[action]")]
@@ -78,6 +81,22 @@ namespace MyApi.Controllers.v1.Auth
         {
             var response = await _refreshTokenHandler.Handle(rtd, cancellationToken);
             return response;
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ApiResult<string>> Logout(CancellationToken cancellationToken)
+        {
+            var response = await _logoutHandler.Handle(HttpContext, cancellationToken);
+            if (response.Equals(ApiResultStatusCode.Success))
+            {
+                return Ok("Logged out!");
+            }
+            if (response.Equals(ApiResultStatusCode.NotFound))
+            {
+                return NotFound("There is no Refresh Token");
+            }
+
+            throw new AppException(ApiResultStatusCode.ServerError);
         }
     }
 }

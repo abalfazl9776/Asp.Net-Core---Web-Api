@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Entities.User;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Services.Services.JWT
+namespace Services.JWT
 {
     public interface IJwtService
     {

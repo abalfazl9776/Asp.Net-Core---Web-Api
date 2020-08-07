@@ -5,6 +5,8 @@
         public JwtSettings JwtSettings { get; set; }
         public IdentitySettings IdentitySettings { get; set; }
         public InitialUserSettings InitialUserSettings { get; set; }
+        public MashhadHostSmsSettings MashhadHostSmsSettings { get; set; }
+        public KavenegarSmsSettings KavenegarSmsSettings { get; set; }
     }
 
     public class IdentitySettings
@@ -35,5 +37,15 @@
     {
         public string UserName { get; set; }
         public string Password { get; set; }
+    }
+    
+    public class MashhadHostSmsSettings
+    {
+        public string Sender { get; set; }
+    }
+
+    public class KavenegarSmsSettings
+    {
+        public string Sender { get; set; }
     }
 }

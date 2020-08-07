@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -46,7 +46,7 @@ namespace Data.Migrations
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     BirthDate = table.Column<DateTime>(type: "date", nullable: false),
-                    Gender = table.Column<int>(nullable: false),
+                    Gender = table.Column<string>(nullable: true),
                     NationalCode = table.Column<string>(nullable: true),
                     BirthCertificateNumber = table.Column<string>(nullable: true),
                     IsActive = table.Column<bool>(nullable: false),

@@ -23,6 +23,7 @@ namespace MyApi
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddUserSecrets("f7a95b8f-5002-457c-a28c-e1198aa96645", true)
                 .AddEnvironmentVariables();
             this.Configuration = builder.Build();
 
@@ -57,9 +58,23 @@ namespace MyApi
             //    });
             //});
 
+            //services.AddCors(corsOptions =>
+            //{
+            //    corsOptions.AddPolicy("fully permissive", configurePolicy =>
+            //    {
+            //        configurePolicy.WithOrigins("http://localhost:4200")
+            //            .AllowAnyHeader()
+            //            .AllowAnyMethod()
+            //            .AllowCredentials();
+            //    });
+            //});
+
             services.AddControllers(options => options.Filters.Add(new AuthorizeFilter()));
 
             services.AddJwtAuthentication(_siteSetting.JwtSettings);
+            services.AddGoogleAuthentication(Configuration);
+
+            services.AddCustomHttpClient(Configuration);
 
             services.AddCustomApiVersioning();
 

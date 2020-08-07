@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Security.Cryptography;
-using System.Text;
 using Common;
 
-namespace Services.Services.JWT
+namespace Services.JWT
 {
     public class TokenFactory : ITokenFactory , IScopedDependency
     {
