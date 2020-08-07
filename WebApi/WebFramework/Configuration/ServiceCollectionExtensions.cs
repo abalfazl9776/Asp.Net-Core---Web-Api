@@ -156,8 +156,6 @@ namespace WebFramework.Configuration
                 options.CallbackPath = new PathString("/google-callback");
                 options.ClientId = googleAuthNSection["ClientId"];
                 options.ClientSecret = googleAuthNSection["ClientSecret"];
-                //options.ClientId = "330448079638-7f821n6cmjjd73ji1miq8g542mvhv2t0.apps.googleusercontent.com";
-                //options.ClientSecret = "AdPD1iVo-tzcTmf8kiO9GNuB";
                 options.Events = new OAuthEvents
                 {
                     OnRemoteFailure = (RemoteFailureContext context) =>
